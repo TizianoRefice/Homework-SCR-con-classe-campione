@@ -13,7 +13,7 @@ import model.Campione;
 public class LettoreFile {
 	
 	private LineNumberReader reader;
-
+	private Campione[] sequenza;
 
 	//legge il segnale dal file selezionato
 	public void apriStreamDati(double valoreSNR, int sequenzaScelta) {
@@ -49,8 +49,8 @@ public class LettoreFile {
 	}
 	
 	//
-	public Campione[] leggi() throws IOException, FileNotFoundException {
-		Campione[] sequenza = new Campione[10000];
+	public void leggi() throws IOException, FileNotFoundException {
+		this.sequenza = new Campione[1000];
 		BufferedReader br = new BufferedReader(reader);
 		int i = 0;
 		String line = br.readLine();
@@ -61,7 +61,6 @@ public class LettoreFile {
 			line = br.readLine();
 		}
 		br.close();
-		return sequenza;
 	}
 	
 	private Campione leggiECreaCampione(String valoriCampione) {
@@ -86,25 +85,9 @@ public class LettoreFile {
 		}
 		return risultato;
 	}
-	
-	public double[] getParteRealeSequenza(Campione[] sequenza) {
-		double[] parteReale = new double[5000];
-		int i = 0;
-		while(sequenza[i] != null) {
-			parteReale[i] = sequenza[i].getParteReale();
-			i++;
-		}
-		return parteReale;
-	}
-	
-	public double[] getParteImmaginariaSequenza(Campione[] sequenza) {
-		double[] parteImmaginaria = new double[5000];
-		int i = 0;
-		while(sequenza[i] != null) {
-			parteImmaginaria[i] = sequenza[i].getParteImmaginaria();
-			i++;
-		}
-		return parteImmaginaria;
+
+	public Campione[] getSequenzaSegnale() {
+		return this.sequenza;
 	}
 }
 

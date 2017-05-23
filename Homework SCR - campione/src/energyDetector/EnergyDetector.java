@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import calcoloSoglia.CalcolatoreSoglia;
-import model.Campione;
 import processamentoSequenze.CalcolatorePotenzeSegnali;
 import processamentoSequenze.LettoreFile;
 
@@ -13,25 +12,40 @@ public class EnergyDetector {
 	
 	public static void esegui(double valoreSNR, int sequenzaScelta) throws FileNotFoundException, IOException{
 		
+		double[] potenze = new double[1000];
+		double probabilita = 0;
+		
 		//calcolo soglia in H0
 		CalcolatoreSoglia cs = new CalcolatoreSoglia();
 		double soglia = cs.calcolaSoglia(valoreSNR);
 		
-		//prendo la sequenza da file
-		Campione[] sequenza;
+		//prendo la sequenza da file e ne calcolo la potenza
+		double potenza = 0;
 		LettoreFile lf = new LettoreFile();
-		lf.apriStreamDati(valoreSNR, sequenzaScelta);
-		sequenza = lf.leggi();
-		
-		//calcolo la potenza del segnale ricevuto
 		CalcolatorePotenzeSegnali cps = new CalcolatorePotenzeSegnali();
-		double potenza = cps.calcolaPotenzaSegnale(lf.getParteRealeSequenza(sequenza), lf.getParteImmaginariaSequenza(sequenza));
+		lf.apriStreamDati(valoreSNR, sequenzaScelta);
+		for(int i = 0; i < 1000; i++) {
+			lf.leggi();
+			potenza = cps.calcolaPotenzaSegnale(lf.getSequenzaSegnale());
+			potenze[i] = potenza;
+		}
 		
-		//confronto soglia e potenza
-		if(potenza > soglia)
-			System.out.println("il PU è presente");
-		else
-			System.out.println("il PU non è presente");
+		//calcolo la probabilita che ci sia il segnale
+		double contatore = 0;
+		for(int j = 0; j < potenze.length; j++) {
+			if(potenze[j] < soglia)
+				contatore++;
+		}
+		probabilita = (contatore/1000) * 100;
+		System.out.println("Percentuale di detection: " + probabilita + "%");
+		//verifico la presenza del PU
+		if(probabilita >= 50) {
+			System.out.println("Non è presente il Primary User, possiamo trasmettere!");
+		} else {
+			System.out.println("E' presente il Primary User, non possiamo trasmettere!");
+		}
+			
+		
 	}
 }
 

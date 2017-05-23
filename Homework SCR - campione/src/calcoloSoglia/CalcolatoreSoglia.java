@@ -26,7 +26,7 @@ public class CalcolatoreSoglia {
 		NoiseGenerator generator = new NoiseGenerator();
 		while(j <= 1000) { 										//mi servono 1000 sequenze per ogni SNR
 			generator.noise(valoreSNR, 1000); 					//genero la sequenza
-			potenzaRumore = generator.getPotenzaRumore(generator.getParteReale(), generator.getPerteImmaginaria()); //ne calcolo la potenza
+			potenzaRumore = generator.getPotenzaRumore(generator.getSequenza()); //ne calcolo la potenza
 			this.potenzeRumore[j] = potenzaRumore; 				//salvo la potenza calcolata dentro l'array di potenze;
 		}
 		Arrays.sort(this.potenzeRumore); 						//le ordino

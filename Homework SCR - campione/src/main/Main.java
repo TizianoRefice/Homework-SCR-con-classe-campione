@@ -14,7 +14,7 @@ public class Main {
 		
 		// valori SNR disponibili -13, -8, -5, +2
 		//prendo da tastiera il valore dell'SNR selezionato
-		System.out.println("Inserire un valore per l'SNR, scegliendo fra: -13, -8, -5, -2");
+		System.out.println("Inserire un valore per l'SNR, scegliendo fra: -13, -8, -5, +2");
 		Scanner scannerSNR = new Scanner(System.in); 
 		double valoreSNR = scannerSNR.nextDouble();
 		
